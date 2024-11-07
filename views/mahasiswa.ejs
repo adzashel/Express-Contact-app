@@ -1,0 +1,19 @@
+<h2>Daftar Mahasiswa</h2>
+    <% mahasiswa.forEach(std => { %>
+      <!-- create table -->
+      <table>
+        <tr>
+            <th>Nama</th>
+            <td><%= std.name %></td>
+        </tr>
+        <tr>
+            <th>NIS</th>
+            <td><%= std.npm %></td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td><%= std.email %></td>
+        </tr>
+    </table>
+    <!-- end table -->
+    <% }) %>

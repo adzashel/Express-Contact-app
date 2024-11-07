@@ -1,0 +1,17 @@
+{
+  "name": "viewengine",
+  "version": "1.0.0",
+  "description": "create website with ejs view engine",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Adzashel Von Moreau",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.21.1",
+    "express-ejs-layouts": "^2.5.1",
+    "nodemon": "^3.1.7"
+  }
+}
