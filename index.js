@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
         {
             name: "Daftar Mahasiswa",
             href: "/mahasiswa/"
-        }
+        },
     ]
 
     res.render('index', {
@@ -156,6 +156,14 @@ app.get('/mahasiswa/', (req, res) => {
         links,
         title: "Daftar Mahasiswa",
         layout: 'partials/container'
+    })
+});
+
+app.use('/' , (req, res) =>{
+    res.status(404);
+    res.render('404' , {
+        layout : 'partials/failed',
+        title : 'Page not found'
     })
 })
 
