@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const { renderContact , detailContact } = require('./utils/contacts');
 const port = 3000;
 const morgan = require('morgan');
 const expressLayouts = require('express-ejs-layouts');
@@ -13,11 +14,7 @@ app.use(express.static('public'));
 app.use(expressLayouts);
 app.use(morgan('dev'));
 
-// application-level middleware
-app.use((req, res, next) => {
-    console.log(`Request received at ${req.url}`);
-    next();
-});
+
 
 const mahasiswa = [{
     name: "Zheeva Azizah",
@@ -73,10 +70,6 @@ app.get('/', (req, res) => {
     });
 });
 
-app.use((req, res, next) => {
-    console.log(`Time ${Date.now()}`);
-    next();
-})
 
 app.get('/about', (req, res) => {
     res.render('about', {
@@ -88,12 +81,24 @@ app.get('/about', (req, res) => {
 
 
 app.get('/contact', (req, res) => {
+    const contacts = renderContact();
     res.render('contact', {
         title: 'Contact',
         layout: 'partials/container',
-        links
+        links,
+        contacts
     });
 });
+
+app.get('/contact/:name' , (req, res) => {
+    const detail = detailContact(req.params.name);
+
+    res.render('detail', {
+        title: 'Detail Contact',
+        layout: 'partials/detail-container',
+        detail
+    });
+})
 
 app.get('/api/', (req, res) => {
     const data = [
@@ -110,9 +115,10 @@ app.get('/api/', (req, res) => {
 });
 
 app.get('/mahasiswa', (req, res) => {
+    const mahasiswa = renderContact();
     res.render('mahasiswa', {
-        mahasiswa,
         links,
+        mahasiswa,
         title: "Daftar Mahasiswa",
         layout: 'partials/container'
     })
