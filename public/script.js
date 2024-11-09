@@ -1,4 +1,4 @@
-function drawVisor() {
+const drawVisor = () => {
     const canvas = document.getElementById('visor');
     const ctx = canvas.getContext('2d');
     
@@ -31,7 +31,7 @@ function drawVisor() {
   let y2Forward = false;
   let y3Forward = true;
   
-  function animate() {
+  const animate = () => {
     requestAnimationFrame(animate);
     ctx.clearRect(0, 0, innerWidth, innerHeight);
     
