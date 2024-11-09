@@ -5,7 +5,13 @@ const expressLayouts = require('express-ejs-layouts');
 
 
 app.set('view engine', 'ejs');
-app.use(expressLayouts)
+app.use(expressLayouts);
+
+// application-level middleware
+app.use((req, res, next) => {
+    console.log(`Request received at ${req.url}`);
+    next();
+});
 
 app.get('/', (req, res) => {
     const links = [
@@ -159,7 +165,7 @@ app.get('/mahasiswa/', (req, res) => {
     })
 });
 
-app.use('/' , (req, res) =>{
+app.use((req, res) =>{
     res.status(404);
     res.render('404' , {
         layout : 'partials/failed',
