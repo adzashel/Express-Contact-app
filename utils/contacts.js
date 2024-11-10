@@ -14,19 +14,37 @@ if(!fs.existsSync(filePath)) {
 
 // create renderContact function
 const renderContact = () => {
-    const fileBuffer = fs.readFileSync(filePath, 'utf8');
+    const fileBuffer = fs.readFileSync(filePath);
     const contacts = JSON.parse(fileBuffer);
     return contacts;
 };
 
 // find contact
+
 const detailContact = (name) => {
     const contacts = renderContact();
-    return contacts.find((contact) => contact.name.toLowerCase() === name.toLowerCase());
+    const findContact = contacts.find(contact => contact.name === name);
+    return findContact;
 }
+
+// save updated contact
+const saveContact = (contacts) => {
+    fs.writeFileSync(filePath, JSON.stringify(contacts), 'utf8'); //parsing into string
+}
+
+// add new contact
+const addContact = (contact) => {
+    const contacts = renderContact();
+    contacts.push(contact);
+    saveContact(contacts);
+}
+
+
+
 
 // Export Module
 module.exports = {
     renderContact , 
-    detailContact
+    detailContact,
+    addContact
 }

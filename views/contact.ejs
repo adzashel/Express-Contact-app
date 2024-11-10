@@ -1,20 +1,33 @@
-<table class="table">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Name</th>
-        <th scope="col">Email</th>
-        <th scope="col">Detail</th>
-      </tr>
-    </thead>
-    <tbody>
-     <% contacts.forEach((contact , index) => { %>
-        <tr>
-            <th scope="row"><%= index + 1 %></th>
-            <td><%= contact.name %></td>
-            <td><%= contact.email %></td>
-            <td><a href="/contact/<%= contact.name%>"><span class="badge rounded-pill bg-success">detail</span></a></td>
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 mt-3">
+      <h2>List Contacts</h2>
+      <a href="/contact/add" class="btn btn-primary mt-3">Add Contact</a>
+      <% if (contacts.length === 0) { %>
+        <div class="alert alert-danger mt-3" role="alert">
+          There are no Data
+        </div>
+      <% } %>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Detail</th>
           </tr>
-     <% }) %>
-    </tbody>
-  </table>
+        </thead>
+        <tbody>
+         <% contacts.forEach((contact , index) => { %>
+            <tr>
+                <th scope="row"><%= index + 1 %></th>
+                <td><%= contact.name %></td>
+                <td><%= contact.email %></td>
+                <td><a href="/contact/<%= contact.name%>"><span class="badge rounded-pill bg-success">detail</span></a></td>
+              </tr>
+         <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

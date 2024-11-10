@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="stylesheet" href="style.css" />
+
     <!-- bootstrap css -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
@@ -14,7 +14,16 @@
     <title><%= title %></title>
   </head>
   <body>
-    <div class="container mt-5"><%- body %></div>
+    <nav>
+      <ul class="nav-list">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/api">Api</a></li>
+        <li><a href="/mahasiswa">Daftar Mahasiswa</a></li>
+      </ul>
+    </nav>
+    <div class="container"><%- body %></div>
   </body>
   <!-- bootstrap js -->
   <script

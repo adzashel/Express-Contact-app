@@ -9,6 +9,7 @@
   "author": "Adzashel Von Moreau",
   "license": "ISC",
   "dependencies": {
+    "chalk": "^4.1.0",
     "ejs": "^3.1.6",
     "express": "^4.21.1",
     "express-ejs-layouts": "^2.5.1",
