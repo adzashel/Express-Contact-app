@@ -21,3 +21,31 @@ nav .nav-list {
     font-size: 1em;
     font-weight: 500;
 }
+
+.wrapper {
+    margin: 5rem auto;
+    text-align: center;
+}
+
+img {
+    width: 100%;
+    max-width: 250px;
+    margin-bottom: 2rem;
+    animation: upAndDown 2s linear infinite;
+}
+
+.nodejs {
+    width: 200px;
+}
+
+@keyframes upAndDown {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}

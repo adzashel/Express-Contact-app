@@ -1,1 +1,13 @@
-[{"name":"Zheeva Azizah","email":"jieeyra@gmail.com"},{"name":"Jill Miller","email":"jill.miller@outlook.com"},{"name":"Rene Meisser","email":"rene.meisser@yahoo.com"},{"name":"Chris","email":"chris@yahoo.com"},{"name":"Sulthan Dzaky","email":"seigneur.noir15@gmail.com"},{"name":"Friedrich Nietzsche","email":"nietzsch_@gmail.com"},{"name":"Simone de Beauvoir","email":"simone_here@gmail.com"}]
+[
+  {
+    "name": "Yves Saint Laurent",
+    "email": "yves_frdev@outlook.com"
+  },
+  { "name": "Zheeva Azizah", "email": "jieeyra@gmail.com" },
+  { "name": "Jill Miller", "email": "jill.miller@outlook.com" },
+  { "name": "Rene Meisser", "email": "rene.meisser@yahoo.com" },
+  { "name": "Sulthan Dzaky", "email": "seigneur.noir15@gmail.com" },
+  { "name": "Friedrich Nietzsche", "email": "nietzsch_@gmail.com" },
+  { "name": "Simone de Beauvoir", "email": "simone_here@gmail.com" },
+  { "name": "Jean Paul Sartre", "email": "sartre_@yahoo.com" }
+]

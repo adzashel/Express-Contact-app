@@ -2,12 +2,15 @@ const express = require('express');
 const app = express();
 const chalk = require('chalk');
 const { renderContact,
-     detailContact, 
-     addContact, 
-     checkDuplicate } = require('./utils/contacts');
+    detailContact,
+    addContact,
+    checkDuplicate } = require('./utils/contacts');
 const port = 3000;
 const expressLayouts = require('express-ejs-layouts');
-const { query, validationResult, check, body } = require('express-validator');
+const { validationResult, check, body } = require('express-validator');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const flash = require('connect-flash');
 
 app.set('view engine', 'ejs');
 
@@ -16,6 +19,21 @@ app.use(express.static('public')); // to show static files
 app.use(express.urlencoded({ extended: true }));
 // Third Party Middleware
 app.use(expressLayouts);
+
+// configure modules
+
+app.use(cookieParser());
+app.use(session({
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 600000, // 10 minutes
+    }
+}));
+
+app.use(flash());
+
 
 
 app.get('/', (req, res) => {
@@ -39,7 +57,8 @@ app.get('/contact', (req, res) => {
     res.render('contact', {
         title: 'Contact',
         layout: 'partials/container',
-        contacts
+        contacts,
+        message: req.flash('message')
     });
 });
 
@@ -54,7 +73,7 @@ app.post('/contact', [
     body('name').custom((value) => {
         const duplicate = checkDuplicate(value);
         if (duplicate) {
-            throw new Error('nama sudah ada');
+            throw new Error('Nama yang anda masukan sudah ada');
         }
         return true;
     }),
@@ -70,6 +89,7 @@ app.post('/contact', [
             })
         } else {
             addContact(req.body);
+            req.flash('message', 'Data has already been added')
             console.log(chalk.bgBlue(`data ${req.body.name} added successfully`));
             res.redirect('/contact');
         }
