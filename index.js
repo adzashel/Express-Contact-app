@@ -1,14 +1,18 @@
 const express = require('express');
 const app = express();
 const chalk = require('chalk');
-const { renderContact, detailContact, addContact } = require('./utils/contacts');
+const { renderContact,
+     detailContact, 
+     addContact, 
+     checkDuplicate } = require('./utils/contacts');
 const port = 3000;
 const expressLayouts = require('express-ejs-layouts');
+const { query, validationResult, check, body } = require('express-validator');
 
 app.set('view engine', 'ejs');
 
 // built in middleware
-app.use(express.static('public'));
+app.use(express.static('public')); // to show static files
 app.use(express.urlencoded({ extended: true }));
 // Third Party Middleware
 app.use(expressLayouts);
@@ -46,12 +50,30 @@ app.get('/contact/add', (req, res) => {
     });
 });
 
-app.post('/contact', (req, res) => {
-    addContact(req.body);
-    console.log(chalk.bgBlue(`data ${req.body.name} added successfully`));
-    res.redirect('/contact');
-})
-
+app.post('/contact', [
+    body('name').custom((value) => {
+        const duplicate = checkDuplicate(value);
+        if (duplicate) {
+            throw new Error('nama sudah ada');
+        }
+        return true;
+    }),
+    check('email').isEmail().withMessage('Email anda tidak valid!'),
+],
+    (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            res.render('add-contact', {
+                title: 'Add Contact',
+                layout: 'partials/container',
+                errors: errors.array()
+            })
+        } else {
+            addContact(req.body);
+            console.log(chalk.bgBlue(`data ${req.body.name} added successfully`));
+            res.redirect('/contact');
+        }
+    })
 
 app.get('/contact/:name', (req, res) => {
     const detail = detailContact(req.params.name);

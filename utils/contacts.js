@@ -27,7 +27,7 @@ const detailContact = (name) => {
     return findContact;
 }
 
-// save updated contact
+// save any changes contact
 const saveContact = (contacts) => {
     fs.writeFileSync(filePath, JSON.stringify(contacts), 'utf8'); //parsing into string
 }
@@ -39,12 +39,17 @@ const addContact = (contact) => {
     saveContact(contacts);
 }
 
-
+// check duplicates name
+const checkDuplicate = (name) => {
+    const contacts =  renderContact();
+    return contacts.find(contact => contact.name === name);
+}
 
 
 // Export Module
 module.exports = {
     renderContact , 
     detailContact,
-    addContact
+    addContact,
+    checkDuplicate
 }
