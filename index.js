@@ -91,7 +91,7 @@ app.post('/contact', [
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             res.render('add-contact', {
-                title: 'Add Contact',
+                title:  'Add Contact',
                 layout: 'partials/container',
                 errors: errors.array() // error kosong berisi undefined
             })
@@ -117,8 +117,27 @@ app.get('/contact/delete-contact/:name' , (req, res) => {
         // redirect to cntacts page
         res.redirect('/contact');
     }
-})
+});
 
+// route update contact
+app.get('/contact/update/:name' , (req, res) =>{
+    const contact = detailContact(req.params.name);
+
+    if(!contact) {
+        res.status(404).send("<h1>Contact not found</h1>");
+    }else {
+        res.render('update-contact', {
+            title: 'Update Contact',
+            layout: 'partials/container',
+            contact
+        });
+    }
+});
+
+// processing form update contact
+app.post('/contact/update', (req, res) => {
+    res.send(req.body);
+});
 
 app.get('/contact/:name', (req, res) => {
     const detail = detailContact(req.params.name);

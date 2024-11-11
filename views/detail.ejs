@@ -11,7 +11,7 @@
           <h5 class="card-title"><%= detail.name %></h5>
           <h6 class="card-subtitle mb-2 text-muted"><%= detail.email %></h6>
          <div class="btn-change">
-          <span class="badge  bg-primary mt-2"><a href="contact/edit-contact/<%= detail.name%>" style="text-decoration: none; color: white; ">Edit contact</a></span>
+          <span class="badge  bg-primary mt-2"><a href="/contact/update/<%= detail.name%>" style="text-decoration: none; color: white; ">Edit contact</a></span>
           <span class="badge  bg-danger mt-2" onclick="return confirm('are u sure?')"><a href="/contact/delete-contact/<%= detail.name%>" style="text-decoration: none; color: aliceblue;">Delete contact</a></span>
          </div>
           <a href="/contact" class="card-link text-decoration-none text-secondary">&laquo;Kembali ke list contact</a>
