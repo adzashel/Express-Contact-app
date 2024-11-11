@@ -4,7 +4,10 @@ const chalk = require('chalk');
 const { renderContact,
     detailContact,
     addContact,
-    checkDuplicate } = require('./utils/contacts');
+    checkExistEmail,
+    checkDuplicate,
+    deleteContact
+} = require('./utils/contacts');
 const port = 3000;
 const expressLayouts = require('express-ejs-layouts');
 const { validationResult, check, body } = require('express-validator');
@@ -34,8 +37,6 @@ app.use(session({
 
 app.use(flash());
 
-
-
 app.get('/', (req, res) => {
     res.render('index', {
         title: 'home page',
@@ -58,7 +59,7 @@ app.get('/contact', (req, res) => {
         title: 'Contact',
         layout: 'partials/container',
         contacts,
-        message: req.flash('message')
+        message: req.flash('message'),
     });
 });
 
@@ -70,6 +71,14 @@ app.get('/contact/add', (req, res) => {
 });
 
 app.post('/contact', [
+    body('email').isEmail().withMessage('Format email salah') // email belum diisi
+    .custom((value) => {
+        const existEmail = checkExistEmail(value);
+        if (existEmail) {
+            throw new Error('Email yang anda masukan sudah ada'); // ada duplikat email
+        }
+        return true;
+    }),
     body('name').custom((value) => {
         const duplicate = checkDuplicate(value);
         if (duplicate) {
@@ -77,7 +86,6 @@ app.post('/contact', [
         }
         return true;
     }),
-    check('email').isEmail().withMessage('Email anda tidak valid!'),
 ],
     (req, res) => {
         const errors = validationResult(req);
@@ -85,7 +93,7 @@ app.post('/contact', [
             res.render('add-contact', {
                 title: 'Add Contact',
                 layout: 'partials/container',
-                errors: errors.array()
+                errors: errors.array() // error kosong berisi undefined
             })
         } else {
             addContact(req.body);
@@ -93,7 +101,24 @@ app.post('/contact', [
             console.log(chalk.bgBlue(`data ${req.body.name} added successfully`));
             res.redirect('/contact');
         }
-    })
+    });
+
+
+    //route delete contact
+app.get('/contact/delete-contact/:name' , (req, res) => {
+    const contact = detailContact(req.params.name);
+    if(!contact) {
+        res.status(404).send("<h1>Contact not found</h1>");
+    }else {
+        // delete the contact
+        deleteContact(req.params.name);
+        req.flash('message' , 'data has been deleted');
+        console.log(chalk.bgRed.inverse(`contact ${req.params.name} has been deleted`)); 
+        // redirect to cntacts page
+        res.redirect('/contact');
+    }
+})
+
 
 app.get('/contact/:name', (req, res) => {
     const detail = detailContact(req.params.name);
@@ -102,7 +127,8 @@ app.get('/contact/:name', (req, res) => {
         layout: 'partials/container',
         detail
     });
-})
+});
+
 
 app.get('/api/', (req, res) => {
     const data = [
@@ -116,15 +142,6 @@ app.get('/api/', (req, res) => {
         }
     ]
     res.json(data);
-});
-
-app.get('/mahasiswa', (req, res) => {
-    const mahasiswa = renderContact();
-    res.render('mahasiswa', {
-        title: "Daftar Mahasiswa",
-        layout: 'partials/container',
-        mahasiswa
-    })
 });
 
 app.use((req, res) => {

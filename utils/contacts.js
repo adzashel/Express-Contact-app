@@ -46,10 +46,25 @@ const checkDuplicate = (name) => {
 }
 
 
+// check duplicates email
+const checkExistEmail = (email) => {
+    const contacts = renderContact();
+    const isEmailExist = contacts.find((contact) => contact.email === email);
+    return isEmailExist;
+}
+
+const deleteContact = (name) => {
+    const contacts = renderContact();
+    const filteredContact = contacts.filter((contact) => contact.name !== name);
+    saveContact(filteredContact);
+}
+
 // Export Module
 module.exports = {
     renderContact , 
     detailContact,
     addContact,
-    checkDuplicate
-}
+    checkDuplicate,
+    checkExistEmail,
+    deleteContact,
+ };
