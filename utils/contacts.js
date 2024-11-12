@@ -42,11 +42,12 @@ const addContact = (contact) => {
 // check duplicates name
 const checkDuplicate = (name) => {
     const contacts =  renderContact();
-    return contacts.find(contact => contact.name === name);
+    const isDuplicate = contacts.find((contact) => contact.name === name);
+    return isDuplicate;
 }
 
 
-// check duplicates email
+// check exist email
 const checkExistEmail = (email) => {
     const contacts = renderContact();
     const isEmailExist = contacts.find((contact) => contact.email === email);
@@ -59,6 +60,24 @@ const deleteContact = (name) => {
     saveContact(filteredContact);
 }
 
+// check duplicate email addresses
+const duplicateEmail  = (email) => {
+    const contacts = renderContact();
+    const isEmailduplicate = contacts.find(contact => contact.email === email);
+    return isEmailduplicate;
+}
+
+
+// update contact
+const updateContact = (contact) => {
+    const contacts = renderContact();
+    const index = contacts.findIndex(c => c.name === contact.name);
+    if(index > -1) {
+        contacts[index] = contact;
+        saveContact(contacts);
+    }
+}
+
 // Export Module
 module.exports = {
     renderContact , 
@@ -67,4 +86,6 @@ module.exports = {
     checkDuplicate,
     checkExistEmail,
     deleteContact,
+    duplicateEmail,
+    updateContact
  };
