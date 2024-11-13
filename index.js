@@ -72,7 +72,7 @@ app.get('/contact/add', (req, res) => {
     });
 });
 
-app.post('/contact', [      
+app.post('/contact', [
     body('name').custom((value) => {
         const duplicate = checkDuplicate(value);
         if (duplicate) {
@@ -80,7 +80,14 @@ app.post('/contact', [
         }
         return true;
     }),
-    body('email').isEmail().withMessage('Format Email salah')
+    body('email').isEmail()
+        .withMessage('Format Email salah')
+        .custom((value) => {
+            const isDuplicateEmail = duplicateEmail(value);
+            if (isDuplicateEmail) {
+                throw new Error('Email sudah terdaftar');
+            } return true;
+        })
 ],
     (req, res) => {
         const errors = validationResult(req);
@@ -124,42 +131,38 @@ app.get('/contact/update/:name', (req, res) => {
             title: 'Update Contact',
             layout: 'partials/container',
             contact
-        }); 
+        });
     }
 });
 
 // processing form update contact
-app.post('/contact/update' , [
-    body('name').custom((value) => {
-        const isDuplicate = checkDuplicate(value);
-        if(isDuplicate) {
+app.post('/contact/update', [
+    body('name').custom((value, { req }) => {
+        const duplicate = checkDuplicate(value);
+        if (value !== req.body.prevName && duplicate) {
             throw new Error('Nama yang anda masukan sudah ada');
-        } return true;
+        }
+        return true;
     }),
-    body('email').isEmail()
-    .custom((value) => {
-        const isDuplicateEmail = duplicateEmail(value);
-        if(isDuplicateEmail) {
-            throw new Error('Email sudah ada , coba email lain')
-        } return true;
+    body('email')
+        .isEmail()
+        .withMessage('Format Email salah')],
+    (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            res.render('update-contact', {
+                title: 'Update Contact',
+                layout: 'partials/container',
+                contact: req.body,
+                errors: errors.array() // error kosong berisi undefined
+            })
+        } else {
+            updateContact(req.body);
+            req.flash('message', 'Data has been updated');
+            console.log(chalk.bgYellow.inverse(`contact ${req.body.prevName} has been updated`));
+            res.redirect('/contact');
+        }
     })
-], (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        res.render('update-contact', {
-            title: 'Update Contact',
-            layout: 'partials/container',
-            contact: req.body,
-            errors: errors.array() // error kosong berisi undefined
-        })
-    } else {
-        updateContact(req.body);
-        req.flash('message', 'data has been updated');
-        console.log(chalk.bgYellow(`contact ${req.body.name} has been updated`));
-        // redirect to cntacts page
-        res.redirect('/contact');
-    }
-})
 app.get('/contact/:name', (req, res) => {
     const detail = detailContact(req.params.name);
     res.render('detail', {

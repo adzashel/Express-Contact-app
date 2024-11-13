@@ -23,8 +23,7 @@ const renderContact = () => {
 
 const detailContact = (name) => {
     const contacts = renderContact();
-    const findContact = contacts.find(contact => contact.name === name);
-    return findContact;
+    return contacts.find(contact => contact.name.toLowerCase() === name.toLowerCase());
 }
 
 // save any changes contact
@@ -68,14 +67,14 @@ const duplicateEmail  = (email) => {
 }
 
 
-// update contact
-const updateContact = (contact) => {
+// update contact informatio
+
+const updateContact = (updatedInfo) => {
     const contacts = renderContact();
-    const index = contacts.findIndex(c => c.name === contact.name);
-    if(index > -1) {
-        contacts[index] = contact;
-        saveContact(contacts);
-    }
+    const filteredContact = contacts.filter(contact => contact.name !== updatedInfo.prevName);
+    filteredContact.push(updatedInfo);// push new contact 
+    delete updatedInfo.prevName; // delete prevName property
+    saveContact(filteredContact);
 }
 
 // Export Module

@@ -12,7 +12,7 @@
       </div>
       <% } %>
       <form method="post" action="/contact/update">
-        <input type="hidden" name="prevName" value="<%= contact.name %>" />
+        <input type="hidden" name="prevName" value="<%= contact.prevName  || contact.name %>" />
         <div class="mb-3">
           <label for="name" class="form-label">Name</label>
           <input
@@ -21,7 +21,6 @@
             id="name"
             name="name"
             value="<%= contact.name %>"
-            required
           />
         </div>
         <div class="mb-3">
